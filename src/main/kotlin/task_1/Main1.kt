@@ -3,13 +3,19 @@ package task_1
 import java.util.*
 
 private const val SECONDS_GAP = 3
+private const val MILLIS_IN_SECOND = 1000
 
 fun main() {
 
+    // Delegated property
+    var cacheValue: Long by TimeCachePropertyDelegate(TimeCacheImpl())
+    cacheValue = System.currentTimeMillis()
+
+    // Delegate
     val cache: TimeCache = TimeCacheDelegate(TimeCacheImpl())
         .also { it.saveTime(System.currentTimeMillis()) }
 
-    val calendar = Calendar.getInstance().apply { timeInMillis = cache.getTime() }
+    val calendar = Calendar.getInstance().apply { timeInMillis = cacheValue }
     val startTimeToPrint = calendar.time
 
     var previousTime = calendar.timeInMillis
@@ -17,7 +23,7 @@ fun main() {
     val runnable = Runnable {
         while (true) {
             if (!Thread.interrupted()) {
-                if (((System.currentTimeMillis() - previousTime) / 1000) >= SECONDS_GAP) {
+                if (checkTimeGap(previousTime)) {
 
                     println("Start time: $startTimeToPrint")
 
@@ -33,4 +39,8 @@ fun main() {
     val thread = Thread(runnable)
     thread.start()
 
+}
+
+private fun checkTimeGap(prevTime: Long): Boolean {
+    return (System.currentTimeMillis() - prevTime) / MILLIS_IN_SECOND >= SECONDS_GAP
 }
