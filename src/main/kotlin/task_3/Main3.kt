@@ -13,13 +13,13 @@ private fun shakerSort(list: List<Int?>?): List<Int?> {
     val resultList = list.toMutableList()
 
     // list borders
-    var listStartMark = 1
+    var listStartMark = 0
     var listEndMark = resultList.size - 1
 
     while (listStartMark <= listEndMark) {
 
         // from end to start
-        for (i in listEndMark downTo listStartMark) {
+        for (i in listEndMark downTill listStartMark) {
             when {
                 resultList[i - 1] == null -> {
                     resultList.swap(iOld = i - 1, iNew = i)
@@ -55,6 +55,10 @@ private fun shakerSort(list: List<Int?>?): List<Int?> {
     }
 
     return resultList
+}
+
+private infix fun Int.downTill(till: Int): IntProgression {
+    return this downTo till + 1
 }
 
 private fun MutableList<Int?>.swap(iOld: Int, iNew: Int) {
