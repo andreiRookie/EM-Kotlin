@@ -58,6 +58,7 @@ private fun shakerSort(list: List<Int?>?): List<Int?> {
 }
 
 private infix fun Int.downTill(till: Int): IntProgression {
+    if (till >= Int.MAX_VALUE) return IntRange.EMPTY
     return this downTo till + 1
 }
 
