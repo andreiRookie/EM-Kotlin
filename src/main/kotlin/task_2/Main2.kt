@@ -1,5 +1,7 @@
 package task_2
 
+import kotlin.reflect.KClass
+
 
 fun main() {
 
@@ -18,6 +20,9 @@ fun main() {
                 println(ints)
             }
             else -> {
+                println("findClass(Char::class): ${list.findByClass(Char::class)}")
+                println("findClass(List::class): ${list.findByClass(List::class)}")
+                println("findClass(Double::class): ${list.findByClass(Double::class)}")
                 println("Bye bye")
                 break
             }
@@ -26,14 +31,18 @@ fun main() {
 
 }
 
-private inline fun <reified T> List<T>.findInt(): Int {
+private inline fun <reified T : Any> List<T>.findInt(): Int {
     return this.first { it is Int } as Int
 }
 
-private inline fun <reified T> List<T>.findFew(): List<Int> {
+private inline fun <reified T : Any> List<T>.findFew(): List<Int> {
     return this.filter { it is Int }.map { it as Int }
 }
 
-private val list: List<Any?> = listOf(
-    100.00, null, '$', 555, "Kotlin", 1234, emptyList<Int>(), 22222, 'K', 50000
+private inline fun <reified T : Any> List<T>.findByClass(kClass: KClass<out T>): T {
+    return this.first { kClass.isInstance(it) }
+}
+
+private val list: List<Any> = listOf(
+    100.00, '$', 555, "Kotlin", 1234, listOf(10, 20, 30, 40), 22222, 'K', 50000
 )
