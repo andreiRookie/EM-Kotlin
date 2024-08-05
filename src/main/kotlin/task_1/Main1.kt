@@ -8,7 +8,7 @@ private const val MILLIS_IN_SECOND = 1000
 fun main() {
 
     // Delegated property
-    var cacheValue: Long by TimeCachePropertyDelegate(TimeCacheImpl())
+    var cacheValue: Long by propertyDelegateProvider
     cacheValue = System.currentTimeMillis()
 
     // Delegate

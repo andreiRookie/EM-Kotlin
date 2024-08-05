@@ -1,5 +1,6 @@
 package task_1
 
+import kotlin.properties.PropertyDelegateProvider
 import kotlin.reflect.KProperty
 
 
@@ -24,8 +25,18 @@ class TimeCacheDelegate(cache: TimeCache): TimeCache by cache
 class TimeCachePropertyDelegate(
     private val timeCache: TimeCache
 ) {
-    operator fun getValue(cache: Any?, property: KProperty<*>): Long = timeCache.getTime()
-    operator fun setValue(cache: Any?, property: KProperty<*>, newValue: Long) {
+    operator fun getValue(thisRef: Any?, property: KProperty<*>): Long = timeCache.getTime()
+    operator fun setValue(thisRef: Any?, property: KProperty<*>, newValue: Long) {
         timeCache.saveTime(newValue)
+    }
+}
+
+val propertyDelegateProvider = PropertyDelegateProvider { thisRef: Any?, prop: KProperty<*> ->
+    TimeCachePropertyDelegate(TimeCacheImpl())
+}
+
+class TimeCachePropertyDelegateProvider {
+    operator fun provideDelegate(thisRef: Any?, prop: KProperty<*>): TimeCachePropertyDelegate {
+        return TimeCachePropertyDelegate(TimeCacheImpl())
     }
 }
