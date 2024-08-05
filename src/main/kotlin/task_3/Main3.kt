@@ -8,9 +8,7 @@ fun main() {
 }
 
 private fun shakerSort(list: List<Int?>?): List<Int?> {
-    require(list != null) { "List must not be null" }
-
-    val resultList = list.toMutableList()
+    val resultList = requireNotNull(list) { "List must not be null" }.toMutableList()
 
     // list borders
     var listStartMark = 0
