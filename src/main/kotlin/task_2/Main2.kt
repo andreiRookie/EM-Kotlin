@@ -6,29 +6,39 @@ import kotlin.reflect.KClass
 fun main() {
 
     while (true) {
-        println("Input \"1\" to find one Int, \"2\" to find few, any other to exit")
-        val input = readln()
+        println("Input \"ONE\" to find one Int, \"FEW\" to find few, any other to find by class and exit")
+        val input = readln().uppercase()
 
-        when (input) {
-            "1" -> {
+        val inputValue = try {
+            InputValue.valueOf(input)
+        } catch (e: Exception) {
+            InputValue.ANY_OTHER
+        }
+
+        when (inputValue) {
+            InputValue.ONE -> {
                 val int = list.findInt()
                 println(int)
             }
 
-            "2" -> {
+            InputValue.FEW -> {
                 val ints = list.findFew()
                 println(ints)
             }
-            else -> {
-                println("findClass(Char::class): ${list.findByClass(Char::class)}")
-                println("findClass(List::class): ${list.findByClass(List::class)}")
-                println("findClass(Double::class): ${list.findByClass(Double::class)}")
+
+            InputValue.ANY_OTHER -> {
+                println("find class Char: ${list.findByClass(Char::class)}")
+                println("find class List: ${list.findByClass(List::class)}")
+                println("find class Double: ${list.findByClass(Double::class)}")
                 println("Bye bye")
                 break
             }
         }
     }
+}
 
+private enum class InputValue {
+    ONE, FEW, ANY_OTHER
 }
 
 private inline fun <reified T : Any> List<T>.findInt(): Int {

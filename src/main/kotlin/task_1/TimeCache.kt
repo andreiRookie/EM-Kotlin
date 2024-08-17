@@ -9,9 +9,11 @@ interface TimeCache {
     fun getTime(): Long
 }
 
+private const val INITIAL_DEFAULT_CACHE_VALUE = 0L
+
 class TimeCacheImpl : TimeCache {
 
-    private var cache = 0L
+    private var cache = INITIAL_DEFAULT_CACHE_VALUE
 
     override fun saveTime(timeInMillis: Long) {
         cache = timeInMillis
